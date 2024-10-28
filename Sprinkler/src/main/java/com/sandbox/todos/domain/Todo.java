@@ -17,5 +17,5 @@ public class Todo {
     String id;
 
     String content;
-    String completed;
+    Boolean completed;
 }

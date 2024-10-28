@@ -10,27 +10,38 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TodoServiceImpl implements TodoService{
+public class TodoServiceImpl implements TodoService {
 
     private final TodoRepository todoRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<Todo> findAll() {
         return todoRepository.findAll();
     }
 
     @Override
+    @Transactional
     public Todo save(Todo todo) {
         return todoRepository.save(todo);
     }
 
     @Override
-    public void delete(Todo todo) {
-
+    @Transactional
+    public void delete(String id) {
+        todoRepository.delete(id);
     }
 
     @Override
+    @Transactional
     public Todo update(Todo todo) {
-        return null;
+        return todoRepository.update(todo);
     }
+
+    @Override
+    @Transactional
+    public Todo findById(String id) {
+        return todoRepository.findById(id);
+    }
+
 }

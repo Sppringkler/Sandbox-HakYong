@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class TodoRepositoryImpl implements TodoRepository{
+public class TodoRepositoryImpl implements TodoRepository {
 
     private final EntityManager em;
 
@@ -20,16 +20,31 @@ public class TodoRepositoryImpl implements TodoRepository{
 
     @Override
     public Todo save(Todo todo) {
-        return null;
+        if (todo.getId() == null) {
+            em.persist(todo);
+            return todo;
+        } else {
+            return em.merge(todo);
+        }
     }
 
     @Override
-    public void delete(Todo todo) {
-
+    public void delete(String id) {
+        Todo todo = em.find(Todo.class, id);
+        if (todo != null) {
+            em.remove(todo);
+        }
     }
+
 
     @Override
     public Todo update(Todo todo) {
-        return null;
+        return em.merge(todo);
     }
+
+    @Override
+    public Todo findById(String id) {
+        return em.find(Todo.class, id);
+    }
+
 }
