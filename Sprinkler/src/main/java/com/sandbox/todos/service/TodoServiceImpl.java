@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class TodoServiceImpl implements TodoService {
 
@@ -21,27 +22,23 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    @Transactional
     public Todo save(Todo todo) {
         return todoRepository.save(todo);
     }
 
     @Override
-    @Transactional
     public void delete(String id) {
         todoRepository.delete(id);
     }
 
     @Override
-    @Transactional
     public Todo update(Todo todo) {
         return todoRepository.update(todo);
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public Todo findById(String id) {
         return todoRepository.findById(id);
     }
-
 }

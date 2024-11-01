@@ -36,7 +36,6 @@ public class TodoRepositoryImpl implements TodoRepository {
         }
     }
 
-
     @Override
     public Todo update(Todo todo) {
         return em.merge(todo);
