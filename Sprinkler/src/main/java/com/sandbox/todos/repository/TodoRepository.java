@@ -9,7 +9,10 @@ public interface TodoRepository {
 
     public Boolean save(Todo todo);
 
-    public Boolean delete(String todo);
+    public void delete(String id);
 
-    public Boolean update(String id);
+    public Todo update(Todo todo);
+
+    Todo findById(String id);
+
 }

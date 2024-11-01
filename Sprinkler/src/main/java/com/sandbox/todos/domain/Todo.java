@@ -1,18 +1,22 @@
 package com.sandbox.todos.domain;
 
 import jakarta.persistence.*;
+
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@Table(name = "todo")
 @Setter @Getter
-@Table(name="todo")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Todo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@GeneratedValue(strategy = GenerationType.SEQUENCE)
-    long id;
+    String id;
+
     String content;
-    int completed;
+    Boolean completed;
 }
-//test용 주석

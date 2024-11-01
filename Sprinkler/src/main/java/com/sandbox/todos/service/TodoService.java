@@ -10,7 +10,9 @@ public interface TodoService {
 
     public boolean save(String content);
 
-    public boolean delete(String todo);
+    public void delete(String id);
 
-    public boolean update(String id);
+    public Todo update(Todo todo);
+
+    Todo findById(String id);
 }

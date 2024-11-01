@@ -2,36 +2,43 @@ package com.sandbox.todos.service;
 
 import com.sandbox.todos.domain.Todo;
 import com.sandbox.todos.repository.TodoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
-public class TodoServiceImpl implements TodoService{
-    @Autowired
-    TodoRepository repository;
+@Transactional
+@RequiredArgsConstructor
+public class TodoServiceImpl implements TodoService {
+
+    private final TodoRepository todoRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<Todo> findAll() {
-        return repository.findAll();
+        return todoRepository.findAll();
     }
 
     @Override
-    public boolean save(String content) {
-        Todo newTodo = new Todo();
-        newTodo.setContent(content);
-
-        return repository.save(newTodo);
+    public Todo save(Todo todo) {
+        return todoRepository.save(todo);
     }
 
     @Override
-    public boolean delete(String todo) {
-        return repository.delete(todo);
+    public void delete(String id) {
+        todoRepository.delete(id);
     }
 
     @Override
-    public boolean update(String id) {
-        return repository.update(id);
+    public Todo update(Todo todo) {
+        return todoRepository.update(todo);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Todo findById(String id) {
+        return todoRepository.findById(id);
     }
 }

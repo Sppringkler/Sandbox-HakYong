@@ -2,6 +2,7 @@ package com.sandbox.todos.repository;
 
 import com.sandbox.todos.domain.Todo;
 import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import jakarta.transaction.Transactional;
@@ -10,67 +11,42 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-@Transactional
-public class TodoRepositoryImpl implements TodoRepository{
-    @PersistenceContext
-    private EntityManager em;
+@RequiredArgsConstructor
+public class TodoRepositoryImpl implements TodoRepository {
+
+    private final EntityManager em;
 
     @Override
     public List<Todo> findAll() {
-        TypedQuery<Todo> query = em.createQuery("select t from Todo t", Todo.class);
-        List<Todo> todoList = query.getResultList();
-
-        return todoList;
+        return em.createQuery("select t from Todo t", Todo.class).getResultList();
     }
 
     @Override
-    public Boolean save(Todo todo) {
-        em.persist(todo);
-        em.flush();
-
-        Todo checkTodo = em.find(Todo.class,todo.getId());
-        if(checkTodo != null) {
-            return true;
-        }else{
-            return  false;
+    public Todo save(Todo todo) {
+        if (todo.getId() == null) {
+            em.persist(todo);
+            return todo;
+        } else {
+            return em.merge(todo);
         }
-
     }
 
     @Override
-    public Boolean delete(String id) {
-        Todo findTodo = em.find(Todo.class, Long.parseLong(id));
-        em.remove(findTodo);
-        em.flush();
-
-        Todo checkTodo = em.find(Todo.class,id);
-        if(checkTodo == null){
-            return true;
-        }else{
-            return false;
+    public void delete(String id) {
+        Todo todo = em.find(Todo.class, id);
+        if (todo != null) {
+            em.remove(todo);
         }
-
     }
 
     @Override
-    public Boolean update(String id) {
-        Todo todo = em.find(Todo.class, Long.parseLong(id));
-        int preCompleted = todo.getCompleted();
-        if(todo != null){
-            if(todo.getCompleted()==1) {
-                todo.setCompleted(0);
-            }else{
-                todo.setCompleted(1);
-            }
-        }
-        em.flush();
-
-        Todo checkTodo =em.find(Todo.class, Long.parseLong(id));
-        if(checkTodo != null && checkTodo.getCompleted() != preCompleted){
-            return true;
-        }else{
-            return false;
-        }
-
+    public Todo update(Todo todo) {
+        return em.merge(todo);
     }
+
+    @Override
+    public Todo findById(String id) {
+        return em.find(Todo.class, id);
+    }
+
 }
