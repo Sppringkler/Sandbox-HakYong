@@ -7,9 +7,9 @@ public interface TodoRepository {
 
     public List<Todo> findAll();
 
-    public Todo save(Todo todo);
+    public Boolean save(Todo todo);
 
-    public void delete(Todo todo);
+    public Boolean delete(String todo);
 
-    public Todo update(Todo todo);
+    public Boolean update(String id);
 }
