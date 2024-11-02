@@ -8,7 +8,7 @@ public interface TodoService {
 
     public List<Todo> findAll();
 
-    public boolean save(String content);
+    public Todo save(Todo todo);
 
     public void delete(String id);
 
