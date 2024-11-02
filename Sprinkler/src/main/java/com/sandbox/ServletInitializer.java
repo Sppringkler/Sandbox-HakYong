@@ -1,4 +1,4 @@
-package com.sandbox.todos;
+package com.sandbox;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

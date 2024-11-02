@@ -1,5 +1,6 @@
 package com.sandbox.todos.domain;
 
+import com.sandbox.paging.domain.Article;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,4 +19,5 @@ public class ResponseMessage {
         this.message = message;
         this.todos = todos;
     }
+
 }
