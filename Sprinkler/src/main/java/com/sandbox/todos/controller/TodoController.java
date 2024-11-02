@@ -12,9 +12,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/todos")
-@CrossOrigin("*")
 public class TodoController {
-
     private final TodoService todoService;
 
     @GetMapping
@@ -37,21 +35,14 @@ public class TodoController {
     }
 
     @PatchMapping("/{todoId}")
-    public ResponseEntity<ResponseMessage> updateTodo(@PathVariable String todoId) {
+    public ResponseEntity<ResponseMessage> toggleTodoCompletion(@PathVariable String todoId) {
         Todo existingTodo = todoService.findById(todoId);
         if (existingTodo == null) {
             return ResponseEntity.status(404).body(new ResponseMessage("정상적이지 않은 요청입니다."));
         }
 
-        System.out.println(existingTodo.getCompleted());
-        // 현재 completed 상태를 반전시킴
         existingTodo.setCompleted(!existingTodo.getCompleted());
         Todo updatedTodo = todoService.update(existingTodo);
-
         return ResponseEntity.ok(new ResponseMessage(updatedTodo.getId() + "의 completed가 정상적으로 토글되었습니다."));
     }
-
-
-
-
 }

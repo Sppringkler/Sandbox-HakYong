@@ -3,6 +3,9 @@ package com.sandbox.todos.repository;
 import com.sandbox.todos.domain.Todo;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -35,7 +38,6 @@ public class TodoRepositoryImpl implements TodoRepository {
             em.remove(todo);
         }
     }
-
 
     @Override
     public Todo update(Todo todo) {

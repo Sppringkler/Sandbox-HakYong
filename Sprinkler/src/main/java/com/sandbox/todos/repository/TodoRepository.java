@@ -7,11 +7,12 @@ public interface TodoRepository {
 
     public List<Todo> findAll();
 
-    public Todo save(Todo todo);
+    public Boolean save(Todo todo);
 
     public void delete(String id);
 
     public Todo update(Todo todo);
 
     Todo findById(String id);
+
 }
