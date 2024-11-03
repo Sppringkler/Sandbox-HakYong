@@ -10,10 +10,6 @@ public class OffsetResponseMessage {
     private int totalPage;
     private List<Article> articles;
 
-    public OffsetResponseMessage(int totalPage) {
-        this.totalPage = totalPage;
-    }
-
     public OffsetResponseMessage(int totalPage, List<Article> articles) {
         this.totalPage = totalPage;
         this.articles = articles;

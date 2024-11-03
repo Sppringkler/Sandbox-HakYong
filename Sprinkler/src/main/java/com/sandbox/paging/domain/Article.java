@@ -1,8 +1,6 @@
 package com.sandbox.paging.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +15,9 @@ import java.sql.Timestamp;
 public class Article {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     String id;
+
     String title;
-    String createdAt;
+    Timestamp createdAt;
 }

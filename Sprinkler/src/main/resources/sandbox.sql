@@ -7,7 +7,7 @@ CREATE TABLE sandbox.todo (
 );
 
 CREATE TABLE sandbox.article (
-                              id INT PRIMARY KEY,
-                              title VARCHAR(255) NOT NULL,
-                              created_at TIMESTAMP NOT NULL
+                                 id INT auto_increment primary KEY,
+                                 title VARCHAR(255) NOT NULL,
+                                 created_at TIMESTAMP NOT NULL
 );

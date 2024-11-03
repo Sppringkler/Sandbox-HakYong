@@ -1,8 +1,10 @@
 package com.sandbox.todos.service;
 
+import com.sandbox.todos.domain.ResponseMessage;
 import com.sandbox.todos.domain.Todo;
 import com.sandbox.todos.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,8 +34,10 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public Todo update(Todo todo) {
-        return todoRepository.update(todo);
+    public Todo update(String todoId) {
+        Todo existingTodo = todoRepository.findById(todoId);
+        existingTodo.setCompleted(!existingTodo.getCompleted());
+        return todoRepository.update(existingTodo);
     }
 
     @Override

@@ -12,7 +12,7 @@ public interface TodoService {
 
     public void delete(String id);
 
-    public Todo update(Todo todo);
+    public Todo update(String todoId);
 
     Todo findById(String id);
 }
