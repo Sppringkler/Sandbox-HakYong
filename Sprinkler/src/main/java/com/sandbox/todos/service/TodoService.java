@@ -8,11 +8,11 @@ public interface TodoService {
 
     public List<Todo> findAll();
 
-    public boolean save(String content);
+    public Todo save(Todo todo);
 
     public void delete(String id);
 
-    public Todo update(Todo todo);
+    public Todo update(String todoId);
 
     Todo findById(String id);
 }

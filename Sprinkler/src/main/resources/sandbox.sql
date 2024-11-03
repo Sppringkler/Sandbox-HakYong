@@ -5,3 +5,9 @@ CREATE TABLE sandbox.todo (
                               content VARCHAR(255) NOT NULL,
                               completed TINYINT NOT NULL
 );
+
+CREATE TABLE sandbox.article (
+                                 id INT auto_increment primary KEY,
+                                 title VARCHAR(255) NOT NULL,
+                                 created_at TIMESTAMP NOT NULL
+);
