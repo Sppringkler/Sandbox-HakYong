@@ -9,14 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class PaigingServiceImpl implements PagingService{
+public class PagingServiceImpl implements PagingService{
 
     private final PagingRepository pagingRepository;
 
@@ -45,23 +43,19 @@ public class PaigingServiceImpl implements PagingService{
 
     @Override
     public CursorResponseMessage findCursor(int size, int cursorId) {
-        // 전체 데이터를 가져온다
         List<Article> articles = pagingRepository.getArticles();
 
-        // 커서 이후 데이터를 담을 리스트 생성
         List<Article> filteredArticles = new ArrayList<>();
 
-        // 전체 articles 리스트를 순회하면서 cursorId 이후의 데이터만 추가
         for (Article article : articles) {
-            if (Integer.parseInt(article.getId()) > cursorId) { // cursorId 이후의 데이터
+            if (Integer.parseInt(article.getId()) > cursorId) {
                 filteredArticles.add(article);
-                if (filteredArticles.size() == size) { // size 개수만큼 수집하면 중단
+                if (filteredArticles.size() == size) {
                     break;
                 }
             }
         }
 
-        // 다음 cursorId 설정
         int nextCursorId = filteredArticles.isEmpty() ? -1 : Integer.parseInt(filteredArticles.get(filteredArticles.size() - 1).getId());
 
         return new CursorResponseMessage(Integer.toString(nextCursorId), filteredArticles);

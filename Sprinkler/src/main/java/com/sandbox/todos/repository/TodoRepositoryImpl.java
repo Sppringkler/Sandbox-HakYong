@@ -32,8 +32,7 @@ public class TodoRepositoryImpl implements TodoRepository {
     }
 
     @Override
-    public void delete(String id) {
-        Todo todo = em.find(Todo.class, id);
+    public void delete(Todo todo) {
         if (todo != null) {
             em.remove(todo);
         }

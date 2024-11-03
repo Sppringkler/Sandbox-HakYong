@@ -30,7 +30,7 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     public void delete(String id) {
-        todoRepository.delete(id);
+        todoRepository.delete(todoRepository.findById(id));
     }
 
     @Override

@@ -9,7 +9,7 @@ public interface TodoRepository {
 
     public Todo save(Todo todo);
 
-    public void delete(String id);
+    public void delete(Todo todo);
 
     public Todo update(Todo todo);
 
