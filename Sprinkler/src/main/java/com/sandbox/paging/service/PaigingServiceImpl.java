@@ -27,10 +27,6 @@ public class PaigingServiceImpl implements PagingService{
 
     @Override
     public OffsetResponseMessage findOffset(int size, int page) {
-        if (size <= 0 || page <= 0) { // page가 1 이상이어야 한다고 가정
-            throw new IllegalArgumentException("Page size and page number must be positive.");
-        }
-
         List<Article> articles = pagingRepository.getArticles();
         int totalSize = articles.size();
         int totalPage = (int) Math.ceil((double) totalSize / size);
@@ -49,10 +45,6 @@ public class PaigingServiceImpl implements PagingService{
 
     @Override
     public CursorResponseMessage findCursor(int size, int cursorId) {
-        if (size <= 0) {
-            throw new IllegalArgumentException("Page size must be positive.");
-        }
-
         // 전체 데이터를 가져온다
         List<Article> articles = pagingRepository.getArticles();
 

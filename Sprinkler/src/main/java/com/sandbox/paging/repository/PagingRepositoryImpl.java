@@ -16,7 +16,11 @@ public class PagingRepositoryImpl implements PagingRepository{
     @Override
     public void saveArticles(List<Article> articles) {
         for (Article article : articles) {
-            em.merge(article);
+            if (article.getId() == null) {
+                em.persist(article);
+            } else {
+                em.merge(article);
+            }
         }
     }
 
