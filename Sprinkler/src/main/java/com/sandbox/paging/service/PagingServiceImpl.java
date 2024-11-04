@@ -19,6 +19,7 @@ public class PagingServiceImpl implements PagingService{
 
     private final PagingRepositoryImpl pagingRepository;
 
+
     @Override
     public void makeArticles(List<Article> articles) {
         pagingRepository.saveArticles(articles);
@@ -48,8 +49,5 @@ public class PagingServiceImpl implements PagingService{
         }
         return new CursorResponseMessage(lastId, filteredArticles);
     }
-
-
-
 
 }
