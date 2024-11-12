@@ -13,6 +13,16 @@ spring:
         show_sql: true
         format_sql: true
 
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username:
+    password:
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true
+      mail.smtp.ssl.trust: smtp.naver.com
+
 logging:
   level:
     org.hibernate.SQL: debug
