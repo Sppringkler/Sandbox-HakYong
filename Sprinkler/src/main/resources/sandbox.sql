@@ -11,3 +11,9 @@ CREATE TABLE sandbox.article (
                                  title VARCHAR(255) NOT NULL,
                                  created_at TIMESTAMP NOT NULL
 );
+
+CREATE TABLE sandbox.email (
+                                 id INT auto_increment primary KEY,
+                                 email VARCHAR(255) NOT NULL,
+                                 code int NOT NULL
+);
