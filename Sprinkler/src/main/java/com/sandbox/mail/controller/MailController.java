@@ -26,8 +26,8 @@ public class MailController {
     // @RequestBody String email : JSON 데이터가 문자열(String) 그대로 저장
     @PostMapping
     public Map<String, Object> sendEmail(@RequestBody EmailRequest emailRequest){
-        mailService.sendVerificationCodeByEmail(emailRequest.getEmail());
-
+        //mailService.sendVerificationCodeByEmail(emailRequest.getEmail()); map으로.
+        mailService.createOrUpdateVerificationCode(emailRequest.getEmail());
         Map<String, Object> response = new HashMap<>();
         response.put("isOk", true);
 
@@ -39,7 +39,13 @@ public class MailController {
     public Map<String, Object> authentication(@RequestBody MailDTO mDto, HttpSession session) {
         Map<String, Object> response = new HashMap<>();
 
-        if(mailService.isAuthCodeValid(mDto.getEmail(), Integer.parseInt(String.valueOf(mDto.getAuthentication())))) {
+//        if(mailService.isAuthCodeValid(mDto.getEmail(), Integer.parseInt(String.valueOf(mDto.getAuthentication())))) {
+//            response.put("isSuccess", true);
+//        }else {
+//            response.put("isSuccess", false);
+//        }
+
+        if(mailService.verifyCode(mDto.getEmail(), mDto.getAuthentication())) {
             response.put("isSuccess", true);
         }else {
             response.put("isSuccess", false);
