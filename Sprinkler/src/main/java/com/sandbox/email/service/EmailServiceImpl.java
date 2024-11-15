@@ -31,7 +31,7 @@ public class EmailServiceImpl implements EmailService{
         EmailVerification emailVerification = EmailVerification.builder()
                 .email(request.getEmail())
                 .code(code).build();
-        emailRepository.saveInfo(emailVerification);
+        emailRepository.saveEmailVerification(emailVerification);
         return new EmailResponseDTO(true);
     }
 

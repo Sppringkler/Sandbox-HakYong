@@ -17,7 +17,7 @@ public class EmailRepositoryImpl implements EmailRepository{
     private EntityManager em;
 
     @Override
-    public void saveInfo(EmailVerification email) {
+    public void saveEmailVerification(EmailVerification email) {
         em.persist(email);
     }
 
