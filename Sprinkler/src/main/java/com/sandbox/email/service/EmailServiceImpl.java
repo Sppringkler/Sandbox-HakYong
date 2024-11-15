@@ -11,9 +11,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.sandbox.email.exception.BadRequestException;
 
 import java.security.SecureRandom;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -26,27 +26,28 @@ public class EmailServiceImpl implements EmailService{
     @Override
     public EmailResponseDTO sendVerificationCode(EmailRequestDTO request) {
         String code = generateVerificationCode();
-        SimpleMailMessage message = generateMailMessage(request.getEmail(),code);
+        SimpleMailMessage message = generateMailMessage(request.getEmail(), code);
         mailSender.send(message);
-        EmailVerification info = EmailVerification.builder()
+        EmailVerification emailVerification = EmailVerification.builder()
                 .email(request.getEmail())
                 .code(code).build();
-        emailRepository.saveInfo(info);
+        emailRepository.saveInfo(emailVerification);
         return new EmailResponseDTO(true);
     }
 
     @Override
     public AuthenticationResponseDTO verifyCode(AuthenticationRequestDTO request) {
-        Optional<EmailVerification> optionalVerification = emailRepository.findByEmail(request.getEmail());
-        if(optionalVerification.isPresent()) {
-            EmailVerification verification = optionalVerification.get();
-            if(verification.getCode().equals(request.getAuthentication())){
-                emailRepository.deleteInfoByEmail(verification.getEmail());
-                return new AuthenticationResponseDTO(true);
-            }
-        }
-        return new AuthenticationResponseDTO(false);
+        return emailRepository.findByEmail(request.getEmail())
+                .filter(verification -> verification.getCode().equals(request.getAuthentication()))
+                .map(verification -> {
+                    emailRepository.deleteInfoByEmail(verification.getEmail());
+                    return new AuthenticationResponseDTO(true);
+                })
+                // 예외를 발생시키도록 수정
+                .orElseThrow(() -> new BadRequestException("요청이 정상적으로 처리되지 않았습니다."));
     }
+
+
 
 
     @Override

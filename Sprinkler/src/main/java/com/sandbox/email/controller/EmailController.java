@@ -17,13 +17,13 @@ public class EmailController {
     private final EmailService emailService;
 
     @PostMapping
-    public ResponseEntity<?> sendVerificationCode(@RequestBody EmailRequestDTO request) {
+    public ResponseEntity<EmailResponseDTO> sendVerificationCode(@RequestBody EmailRequestDTO request) {
         EmailResponseDTO response = emailService.sendVerificationCode(request);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/authentication")
-    public ResponseEntity<?> verifyCode(@RequestBody AuthenticationRequestDTO request) {
+    public ResponseEntity<AuthenticationResponseDTO> verifyCode(@RequestBody AuthenticationRequestDTO request) {
         AuthenticationResponseDTO response = emailService.verifyCode(request);
         return ResponseEntity.ok(response);
     }
