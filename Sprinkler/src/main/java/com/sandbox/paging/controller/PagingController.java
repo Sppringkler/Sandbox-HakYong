@@ -5,8 +5,6 @@ import com.sandbox.paging.domain.ArticleWrapper;
 import com.sandbox.paging.domain.CursorResponseMessage;
 import com.sandbox.paging.domain.OffsetResponseMessage;
 import com.sandbox.paging.service.PagingService;
-import com.sandbox.todos.domain.ResponseMessage;
-import com.sandbox.todos.service.TodoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +13,6 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("*")
 @RequestMapping("/articles")
 public class PagingController {
 

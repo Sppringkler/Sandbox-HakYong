@@ -18,9 +18,6 @@
         <module name="Sprinkler.Sprinkler.main" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="22">
-      <module name="Sprinkler.Sprinkler.main~1" target="22" />
-      <module name="Sprinkler.Sprinkler.test~1" target="22" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="22" />
   </component>
 </project>
