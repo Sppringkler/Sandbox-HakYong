@@ -4,6 +4,7 @@ import com.sandbox.paging.domain.Article;
 import com.sandbox.paging.domain.CursorResponseMessage;
 import com.sandbox.paging.domain.OffsetResponseMessage;
 import com.sandbox.paging.repository.PagingRepository;
+import com.sandbox.paging.repository.PagingRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +17,8 @@ import java.util.List;
 @Transactional
 public class PagingServiceImpl implements PagingService{
 
-    private final PagingRepository pagingRepository;
+    private final PagingRepositoryImpl pagingRepository;
+
 
     @Override
     public void makeArticles(List<Article> articles) {
@@ -25,43 +27,27 @@ public class PagingServiceImpl implements PagingService{
 
     @Override
     public OffsetResponseMessage findOffset(int size, int page) {
-        List<Article> articles = pagingRepository.getArticles();
-        int totalSize = articles.size();
-        int totalPage = (int) Math.ceil((double) totalSize / size);
+        List<Article> pagedArticles = pagingRepository.findArticle(size,page,true);
+        long totalPage = (pagingRepository.countArticle()/size) + 1;
 
-        if (page > totalPage) {
-            return new OffsetResponseMessage(totalPage, new ArrayList<>());
-        }
-
-        int startIndex = (page - 1) * size;
-        int endIndex = Math.min(startIndex + size, totalSize);
-
-        List<Article> pagedArticles = articles.subList(startIndex, endIndex);
-
-        return new OffsetResponseMessage(totalPage, pagedArticles);
+        return new OffsetResponseMessage((int)totalPage, pagedArticles);
     }
 
     @Override
     public CursorResponseMessage findCursor(int size, int cursorId) {
-        List<Article> articles = pagingRepository.getArticles();
-
-        List<Article> filteredArticles = new ArrayList<>();
-
-        for (Article article : articles) {
-            if (Integer.parseInt(article.getId()) > cursorId) {
-                filteredArticles.add(article);
-                if (filteredArticles.size() == size) {
-                    break;
-                }
-            }
+        List<Article> filteredArticles = pagingRepository.findArticle(size,cursorId,false);
+        int lastCursorId = -1;
+        if(filteredArticles.size() > 0){
+            lastCursorId = Integer.parseInt(filteredArticles.getLast().getId());
         }
 
-        int nextCursorId = filteredArticles.isEmpty() ? -1 : Integer.parseInt(filteredArticles.get(filteredArticles.size() - 1).getId());
-
-        return new CursorResponseMessage(Integer.toString(nextCursorId), filteredArticles);
+        String lastId;
+        if(lastCursorId == -1){
+            lastId = "undefined";
+        }else{
+            lastId = String.valueOf(lastCursorId);
+        }
+        return new CursorResponseMessage(lastId, filteredArticles);
     }
-
-
-
 
 }
