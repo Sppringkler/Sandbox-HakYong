@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.sandbox.email.exception.BadRequestException;
 
-import java.security.SecureRandom;
+import java.util.Random;
 
 @Service
 @Transactional
@@ -21,7 +21,7 @@ import java.security.SecureRandom;
 public class EmailServiceImpl implements EmailService{
     private final EmailRepository emailRepository;
     private final JavaMailSender mailSender;
-    private final SecureRandom secureRandom = new SecureRandom();
+    private final Random random = new Random();
 
     @Override
     public EmailResponseDTO sendVerificationCode(EmailRequestDTO request) {
@@ -52,7 +52,7 @@ public class EmailServiceImpl implements EmailService{
 
     @Override
     public String generateVerificationCode() {
-        int code = secureRandom.nextInt(900000) + 100000; // 100000 ~ 999999
+        int code = random.nextInt(900000) + 100000; // 100000 ~ 999999
         return String.valueOf(code);
     }
 

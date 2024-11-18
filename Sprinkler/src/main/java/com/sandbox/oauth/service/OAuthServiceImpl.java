@@ -1,5 +1,6 @@
 package com.sandbox.oauth.service;
 
+import com.sandbox.oauth.dto.AccessTokenResponseDTO;
 import com.sandbox.oauth.dto.TokenResponseDTO;
 import com.sandbox.oauth.entity.User;
 import com.sandbox.oauth.exception.AuthorizationCodeMissingException;
@@ -11,6 +12,8 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Optional;
 
 import static com.sandbox.oauth.util.OAuthUtils.*;
 
@@ -70,6 +73,7 @@ public class OAuthServiceImpl implements OAuthService{
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<String> response = restTemplate.exchange(kakaoUserInfoUrl, HttpMethod.GET, entity, String.class);
 
+        System.out.println(response.getBody());
         if (response.getStatusCode() == HttpStatus.OK) {
             String name = extractName(response.getBody());
             String email = extractEmail(response.getBody());
@@ -105,4 +109,33 @@ public class OAuthServiceImpl implements OAuthService{
             throw new RuntimeException("Fail to get User Name");
         }
     }
+
+    @Override
+    public AccessTokenResponseDTO reissueAccessToken(String refreshToken) {
+        // Refresh Token 검증 및 Access Token 재발급
+        Optional<User> userOptional = userRepository.findByRefreshToken(refreshToken);
+
+        if (userOptional.isEmpty()) {
+            throw new RuntimeException("Invalid refresh token");
+        }
+
+        User user = userOptional.get();
+        String newAccessToken = user.getAccessToken();
+
+        return new AccessTokenResponseDTO(newAccessToken);
+    }
+
+    @Override
+    public void logout(String refreshToken) {
+        Optional<User> userOptional = userRepository.findByRefreshToken(refreshToken);
+
+        if (userOptional.isEmpty()) {
+            throw new RuntimeException("User not found with the provided refresh token");
+        }
+
+        // 사용자 삭제
+        User user = userOptional.get();
+        userRepository.delete(user);
+    }
+
 }

@@ -38,7 +38,7 @@ public class PagingServiceImpl implements PagingService{
         List<Article> filteredArticles = pagingRepository.findArticle(size,cursorId,false);
         int lastCursorId = -1;
         if(filteredArticles.size() > 0){
-            lastCursorId = Integer.parseInt(filteredArticles.getLast().getId());
+            lastCursorId = Integer.parseInt(String.valueOf(filteredArticles.getLast().getId()));
         }
 
         String lastId;

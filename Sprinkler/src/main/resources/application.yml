@@ -25,8 +25,8 @@ spring:
         format_sql: true
   oauth:
     kakao:
-      client-id: "0da56a0700a56821782b91c49ce03b42"
-      redirect-uri: "https://ssafysandbox.vercel.app/oauth/redirect"
+      client-id: 0da56a0700a56821782b91c49ce03b42
+      redirect-uri: https://ssafysandbox.vercel.app/oauth/redirect
       token-url: https://kauth.kakao.com/oauth/token
       user-info-url: https://kapi.kakao.com/v2/user/me
 

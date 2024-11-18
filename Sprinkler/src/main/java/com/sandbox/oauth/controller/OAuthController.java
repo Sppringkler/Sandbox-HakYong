@@ -7,7 +7,7 @@ import com.sandbox.oauth.dto.UserInfoResponseDTO;
 import com.sandbox.oauth.service.OAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +22,7 @@ public class OAuthController {
     public ResponseEntity<AccessTokenResponseDTO> handleAuthCode(@RequestBody AuthCodeRequestDTO request){
         TokenResponseDTO response = oAuthService.getAccessToken(request.getCode());
         return ResponseEntity.ok()
-                .header("Set-Cookie", "refreshToken=" + response.getRefreshToken() + "; Path=/; HttpOnly; Secure; SameSite=None")
+                .header("Set-Cookie", "refreshToken=" + response.getRefreshToken() + "; Path=/; HttpOnly; Secure; SameSite=None" )
                 .body(new AccessTokenResponseDTO(response.getAccessToken()));
     }
 
@@ -32,4 +32,22 @@ public class OAuthController {
         String name = oAuthService.getUserName(accessToken);
         return ResponseEntity.ok(new UserInfoResponseDTO(name));
     }
+
+    @GetMapping("/reissue")
+    public ResponseEntity<AccessTokenResponseDTO> reissueToken(
+            @CookieValue(value = "refreshToken", required = false) String refreshToken){
+        AccessTokenResponseDTO response = oAuthService.reissueAccessToken(refreshToken);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(
+            @CookieValue(value = "refreshToken", required = false) String refreshToken) {
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .header("Set-Cookie", "refreshToken=" + refreshToken + "; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=0" )
+                .build();
+    }
+
+
 }
